@@ -1,0 +1,20 @@
+.nameField
+{
+	border-radius: 7px;
+	background-color: yellow;
+	height: 25px;
+}
+input
+{
+	border-radius: 9px;
+	background-color: lightblue;
+}
+button
+{
+	background-color: skyblue;
+	border-radius: 7px;
+}
+body
+{
+	background-color: pink;
+}
