@@ -1,0 +1,83 @@
+<!-- Simple calculator using JQuery -->
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>SimpleCalculator</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js">
+	</script>
+	<style>
+		button {
+			border-radius: 20px;
+			border-width: 3px;
+			width: 90px;
+			height: 70px;
+			background-color: bisque;
+			text-align: center;
+			font-size: 25px;
+		}
+
+		.grid-container {
+			grid-gap: 30px;
+			display: grid;
+			grid-template-columns: auto auto auto auto;
+			padding: 10px;
+		}
+
+		#TextBar {
+			width: 400px;
+			height: 90px;
+			border-radius: 10px;
+			border-width: 3px;
+			background-color: bisque;
+			font-size: 25px;
+		}
+
+		#bar {
+			align-self: center;
+		}
+	</style>
+	<script>
+		function createElements() {
+			$("#bar").append("<input type='text' id='TextBar' placeholder='Enter expression'>");
+			var buttonCounter = 0;
+			var buttonValues = ["8", "9", "+", "-", "4", "5", "6", "7", "0", "1", "2", "3", "Clear", "*", "=", "/"];
+			while (buttonCounter < 16) {
+				$button = $('<button>' + buttonValues[buttonCounter] + '</button>').attr({value: buttonValues[buttonCounter]});
+				if (buttonValues[buttonCounter] == "Clear") {
+					$button.on('click', clearBar);
+				}
+				else if (buttonValues[buttonCounter] == "=") {
+					$button.on('click', evaluateExpression);
+				}
+				else {
+					$button.on('click', function() {
+						generateExpression(this);
+					});
+				}
+				$(".grid-container").append($button);
+				buttonCounter++;
+			}
+		}
+
+		function evaluateExpression() {
+			$('#TextBar').val(eval($('#TextBar').val()));
+		}
+
+		function clearBar() {
+			$('#TextBar').val("");
+		}
+		function generateExpression() {
+			$('#TextBar').val($('#TextBar').val() + element.value);
+		}
+	</script>
+</head>
+<body onload="createElements()" bgcolor="lightgrey">
+	<center>
+		<h1>Standard Calculator</h1>
+		<div id="bar"></div>
+		<div class="grid-container"></div>
+	</center>
+</body>
+</html>

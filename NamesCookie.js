@@ -1,0 +1,1 @@
+//Cookie storage to store names

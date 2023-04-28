@@ -1,0 +1,41 @@
+<!-- Getting a city weather data using AJAX XMLHttpRequest -->
+<html>
+	<head>
+		<title>
+			WeatherMap
+		</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+		<script>
+			function getWeatherData() {
+				var city = $('#city').val();
+				var dataurl = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=abe3a0f4d0b6cebfbe7393b4b4e3aa28&units=metric";
+
+				$('#demo').html("<img src='loadingIcon.gif'>");
+
+				$.ajax({
+					url: dataurl,
+					type: "GET",
+					success: function(responce) {
+						$("#demo").html("Temperature of " + city + " is: " + responce.main.temp);
+					},
+					error: function(responce) {
+						if (responce.status == "404") {
+							$("#demo").html("City Not Found. Please try again!");
+						}
+						else if(responce.status == "400") {
+							$("#demo").html("Please Enter City Name!");
+						}
+						else {
+							$("#demo").html("Connection error. Please try again later!");
+						}
+					}
+				});
+			}
+		</script>
+	</head>
+	<body onload="$('#load').hide()">
+		<input type="text" id="city" placeholder="City Name"><br>
+		<button onclick="getWeatherData()">Submit</button>
+		<div id="demo"></div>
+	</body>
+</html> 

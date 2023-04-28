@@ -1,0 +1,59 @@
+<!-- Hardcode 10 textboxes without ids and print all text in them upon clicking a button -->
+<html>
+	<head>
+		<title>
+			PrintAll
+		</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+	</head>
+	<style>
+		input {
+			align-self: center;
+			border-radius: 7px;
+			background-color: lightpink;
+			height: 30px;
+		}		
+
+		button {
+			align-self: center;
+			border-radius: 7px;
+			background-color: lightgrey;
+			width: 70px;
+		}
+	</style>
+	<script>
+		var values = ["Prudhvi", "Ram", "Shiva", "Manikanta", "Ravi", "Mohan", "Sahith", "Vignesh", "Pavan", "Sandeep"];
+		function createButtons() {
+			var centerElement = document.createElement("center");
+			var textFieldCounter = 0;
+			document.body.appendChild(centerElement);
+			while (textFieldCounter < 10) {
+				var textField = document.createElement("input");
+				textField.type = "text";
+				// textField.setAttribute(readonly);
+				centerElement.appendChild(textField);
+				textFieldCounter++;
+				var br = document.createElement("br")
+				centerElement.appendChild(br);
+				centerElement.appendChild(br);
+			}
+			var button = document.createElement("button");
+			var value = document.createTextNode("PrintAll");
+			button.appendChild(value);
+			button.addEventListener("click", printAll)
+			centerElement.appendChild(button);
+			document.centerElement.appendChild(button);
+		}
+
+		function printAll() {
+			var textFieldCounter = 0;
+			var collection = document.getElementsByTagName("input");
+			while (textFieldCounter < 10) {
+				collection[textFieldCounter].value = values[textFieldCounter];
+				textFieldCounter++;
+			}
+		}
+	</script>
+	<body onload='createButtons()'>
+	</body>
+</html>
