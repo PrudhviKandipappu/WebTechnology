@@ -1,0 +1,129 @@
+<!-- HTML Page To Maintain The Stock-->
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Stock Maintenance</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+	<script>
+		var ipAddress = "138.68.140.83";
+		$affectedRow = null;
+
+		function saveData(callback) {
+			$itemID = $('#itemID').val();
+			$description = $('#description').val();
+			$unitPrice = $('#unitPrice').val();
+			$stockQty = $('#stockQty').val();
+			$elements = [$itemID, $description, $unitPrice, $stockQty, "<center><button onclick='loadData(this)'><span class='glyphicon glyphicon-edit'></button><center>", "<center><button onclick='deleteData(this)'><span class='glyphicon glyphicon-trash'></button></center>"];
+
+			var dataURL = "http://" + ipAddress + "/Prudhvi/SaveData.php?itemID=" + $itemID + "&description=" + $description + "&unitPrice=" + $unitPrice + "&stockQty=" + $stockQty;
+			// $('#demo').html("<img src='loadingIcon.gif'>");
+			$table = document.getElementById("report");
+			$.ajax({
+				url: dataURL,
+				type: 'GET',
+				success: function(response) {
+					if (response == 1) {
+						$counter = 0;
+						// alert();
+						$row = $table.insertRow(1);//$table.rows.length
+						while ($counter < $elements.length) {
+							$row.insertCell($counter).innerHTML = $elements[$counter];
+							$counter++;
+						}
+					}
+
+					if (response == 2) {
+						// $childrens = $affectedRow.children();
+						$counter = 0;
+						while ($counter < $elements.length - 2) {
+							$affectedRow.children().eq($counter).text($elements[$counter]);
+							$counter++;
+						}
+					}
+				} 
+			});
+			clearData();
+		}
+
+		function loadData(element) {
+			// console.log(itemID);
+			// var dataURL = "http://" + ipAddress + "/Prudhvi/loadData.php?itemID=" + itemID;
+			// // alert(dataURL);
+			// $.ajax({
+			// 	url: dataURL,
+			// 	type: 'GET',
+			// 	success: function(response) {
+			// 		$jsonData = JSON.parse(response);
+			// 		$('#itemID').val($jsonData['ItemID']);
+			// 		$('#description').val($jsonData['Description']);
+			// 		$('#unitPrice').val($jsonData['UnitPrice']);
+			// 		$('#stockQty').val($jsonData['StockQty']);
+			// 	}
+			// });
+			$row = $(element).closest("tr");
+			$affectedRow = $row;
+			$countOfChilds = $row.children().length - 2;
+			$counter = 0;
+			$ids = ["#itemID", "#description", "#unitPrice", "#stockQty"];
+			while ($counter < $countOfChilds) {
+				$child = $row.children();
+				$($ids[$counter]).val($child.eq($counter).text());
+				$counter++;
+			}
+		}
+
+		function deleteData(element) {
+			$row = $(element).closest("tr");
+			$child = $row.children();
+			var itemID = $child.eq(0).text();
+			var dataURL = "http://" + ipAddress + "/Prudhvi/DeleteData.php?itemID=" + itemID;
+			$.ajax({
+				url: dataURL,
+				type: 'GET',
+				success: function(response) {
+					if (response > 0) {
+						$row.remove();
+					}
+				}
+			});
+		}
+
+		function showData() {
+			var dataURL = "http://" + ipAddress + ":8080/Prudhvi/ShowData.jsp";
+			$('#Data').html("<img src='loadingIcon.gif'>");
+			$.ajax({
+				url: dataURL,
+				type: 'GET',
+				success: function(response) {
+					$('#Data').html(response);
+				}
+			});
+		}
+
+		function clearData() {
+			$('input').val("");
+		}
+
+	</script>
+</head>
+<body bgcolor="black" onload="showData()">
+	<center>
+		<h1>Stock Maintenance</h1>
+		<div>
+			<input type="text" id="itemID" placeholder="Enter ItemID" autofocus>&nbsp&nbsp
+			<input type="text" id="description" placeholder="Enter Description"><br><br>
+			<input type="text" id="unitPrice" placeholder="Enter UnitPrice">&nbsp&nbsp
+			<input type="text" id="stockQty" placeholder="Enter StockQty"><br><br>
+			<button type="reset">Reset</button>
+			<button onclick="saveData(showData)">Save</button>
+			</form>
+		</div><br>
+		<div id='Data'>
+		</div>
+	</center>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!-- Test the audio player -->
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+	<script>
+		var audioPlayer = document.getElementById('audio');
+		function makeAudio() {
+			$file = $('#fileName').val();
+			$fileName = $file.substr(12);
+			$('audio').html("<source src='" + $fileName + "'></source>");
+		}
+
+
+		function playAudio() { 
+			var x = document.getElementById("myAudio"); 
+			x.play(); 
+		} 
+
+		function pauseAudio() { 
+			var x = document.getElementById("myAudio"); 
+     		x.pause(); 
+		} 
+	</script>
+</head>
+<body>
+	<input type="file" id="fileName" onchange="makeAudio()" accept=".mp3">
+	<audio controls id="myAudio"></audio>
+	<button onclick="playAudio()">Play</button>
+	<button onclick="pauseAudio()">Pause</button>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!-- Drop and Drag an image -->
+<html>
+	<head>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+		<script>
+			function drag(event) {
+				event.dataTransfer.setData("text", event.target.id);
+			}
+
+			function drop(event) {
+				event.preventDefault();
+				var sourceImageID = event.dataTransfer.getData("text");
+				var sourceImage = document.getElementById(sourceImageID);
+				var destinationImage = event.target;
+				if (sourceImage.tagName == "IMG" && destinationImage.tagName == "IMG") {
+					var tempImageSrc = destinationImage.src;
+					destinationImage.src = sourceImage.src;
+					sourceImage.src = tempImageSrc;
+				}
+			}
+
+			function allowDrag() {
+				event.preventDefault();
+			}
+		</script>
+		<style>
+			img {
+				width: 150px;
+				height: 150px;
+			}
+		</style>
+	</head>
+	<body>
+		<table border='5'>
+			<tr>
+				<td ondrop="drop(event)" ondragover="allowDrag(event)">
+					<img id="cloud" src="cloud.jpg" ondragstart="drag(event)" draggable="true">
+				</td>
+				<td ondrop="drop(event)" ondragover="allowDrag(event)">
+					<img id="mountain" src="mountain.jpg" ondragstart="drag(event)" draggable="true">
+				</td>
+				<td ondrop="drop(event)" ondragover="allowDrag(event)">
+					<img id="rainbow" src="rainbow.jpg" draggable="true" ondragstart="drag(event)">
+				</td>
+			</tr>
+			<tr>
+				<td ondrop="drop(event)" ondragover="allowDrag(event)">
+					<img id="river" src="river.jpg" ondragstart="drag(event)" draggable="true">
+				</td>
+				<td ondrop="drop(event)" ondragover="allowDrag(event)">
+					<img id="road" src="road.jpg" ondragstart="drag(event)" draggable="true">
+				</td>
+				<td ondrop="drop(event)" ondragover="allowDrag(event)">
+					<img id="sunSet" src="sunSet.jpg" draggable="true" ondragstart="drag(event)">
+				</td>
+			</tr>
+			<tr>
+				<td ondrop="drop(event)" ondragover="allowDrag(event)">
+					<img id="sunrise" src="sunrise.jpg" ondragstart="drag(event)" draggable="true">
+				</td>
+				<td ondrop="drop(event)" ondragover="allowDrag(event)">
+					<img id="tree" src="tree.jpg" ondragstart="drag(event)" draggable="true">
+				</td>
+				<td ondrop="drop(event)" ondragover="allowDrag(event)">
+					<img id="window" src="window.jpg" draggable="true" ondragstart="drag(event)">
+				</td>
+			</tr>
+		</table>
+	</body>
+</html>
