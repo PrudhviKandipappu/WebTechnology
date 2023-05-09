@@ -8,9 +8,14 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
+	<!-- <script src="https://jsuites.net/v4/jsuites.js"></script> -->
+	<!-- <link rel="stylesheet" href="https://jsuites.net/v4/jsuites.css" type="text/css" /> -->
+
 	<script>
 		var ipAddress = "138.68.140.83";
 		$affectedRow = null;
+		$checkIcon = "<span class='glyphicon glyphicon-ok-circle'></span> ";
 
 		function saveData(callback) {
 			$itemID = $('#itemID').val();
@@ -20,7 +25,7 @@
 			$elements = [$itemID, $description, $unitPrice, $stockQty, "<center><button onclick='loadData(this)'><span class='glyphicon glyphicon-edit'></button><center>", "<center><button onclick='deleteData(this)'><span class='glyphicon glyphicon-trash'></button></center>"];
 
 			var dataURL = "http://" + ipAddress + "/Prudhvi/SaveData.php?itemID=" + $itemID + "&description=" + $description + "&unitPrice=" + $unitPrice + "&stockQty=" + $stockQty;
-			// $('#demo').html("<img src='loadingIcon.gif'>");
+
 			$table = document.getElementById("report");
 			$.ajax({
 				url: dataURL,
@@ -28,21 +33,32 @@
 				success: function(response) {
 					if (response == 1) {
 						$counter = 0;
-						// alert();
 						$row = $table.insertRow(1);//$table.rows.length
 						while ($counter < $elements.length) {
 							$row.insertCell($counter).innerHTML = $elements[$counter];
 							$counter++;
 						}
+						// jSuites.notification({
+						// 	name: "Stock Maintenance",
+						// 	message: "New Stock Added",
+						// });
+						$('#toast').html($checkIcon + "New Record Entered Successfully!");
+						displayToast();
 					}
 
 					if (response == 2) {
-						// $childrens = $affectedRow.children();
 						$counter = 0;
 						while ($counter < $elements.length - 2) {
 							$affectedRow.children().eq($counter).text($elements[$counter]);
 							$counter++;
 						}
+						// jSuites.notification({
+						// 	name: "Stock Maintenance",
+						// 	message: "Stock Updated",
+						// });
+
+						$('#toast').html($checkIcon + "Record Updated Successfully!");
+						displayToast();
 					}
 				} 
 			});
@@ -81,15 +97,27 @@
 			$child = $row.children();
 			var itemID = $child.eq(0).text();
 			var dataURL = "http://" + ipAddress + "/Prudhvi/DeleteData.php?itemID=" + itemID;
-			$.ajax({
-				url: dataURL,
-				type: 'GET',
-				success: function(response) {
-					if (response > 0) {
-						$row.remove();
+
+			if (confirm("Do you want to delete the record?")) {
+				$.ajax({
+					url: dataURL,
+					type: 'GET',
+					success: function(response) {
+						if (response > 0) {
+							$row.remove();
+						}
 					}
-				}
-			});
+				});
+
+				// jSuites.notification({
+				// 	error: 1,
+				// 	name: "Stock Maintenance",
+				// 	message: "Successfully Deleted",
+				// });
+
+				$('#toast').html($checkIcon + "Record Removed Successfully!");
+				displayToast();
+			}
 		}
 
 		function showData() {
@@ -108,22 +136,60 @@
 			$('input').val("");
 		}
 
+		function detectInternet() {
+			if (!navigator.onLine) {
+				alert("ok");
+				$('body').html("<center><h2>No Internet Connection. Please Check Once!</h2></center>");
+			}
+		}
+
+		function displayToast() {
+			$toast = document.getElementById('toast');
+			$toast.className = "show";
+			setTimeout(function() {
+				$toast.className = "hide";
+			}, 3000);
+		}
+
 	</script>
+
+	<style>
+		#toast{
+            visibility: hidden;
+            min-width: 250px;
+            background-color: lightskyblue;
+            text-align: center;
+            border-radius: 5px;
+            padding: 16px;
+            position: fixed;
+            left: 40%;
+            bottom: 30px;
+            font-size: 17px;
+            opacity: 1.0;
+        }
+
+        #toast.show {
+            visibility: visible;
+            -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+            animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        }
+	</style>
 </head>
-<body bgcolor="black" onload="showData()">
+<body bgcolor="black" onload="showData(); detectInternet()">
 	<center>
-		<h1>Stock Maintenance</h1>
+		<h1><b>Stock Maintenance</b></h1><br>
 		<div>
 			<input type="text" id="itemID" placeholder="Enter ItemID" autofocus>&nbsp&nbsp
 			<input type="text" id="description" placeholder="Enter Description"><br><br>
 			<input type="text" id="unitPrice" placeholder="Enter UnitPrice">&nbsp&nbsp
 			<input type="text" id="stockQty" placeholder="Enter StockQty"><br><br>
-			<button type="reset">Reset</button>
 			<button onclick="saveData(showData)">Save</button>
 			</form>
 		</div><br>
 		<div id='Data'>
 		</div>
+		<div id="toast">
+		</div>
 	</center>
 </body>
-</html>
+</html> 

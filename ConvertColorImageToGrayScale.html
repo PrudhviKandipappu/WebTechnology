@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Image Converter</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+	<script>
+		function convertImage() {
+			$file = document.getElementById('fileName').files[0];
+			$form_data = new FormData();
+			$form_data.append('image', $file);
+			// alert($form_data);
+			$.ajax({
+				url: "http://138.68.140.83/Prudhvi/upload.php",
+				data: $form_data,
+				type: 'POST',
+				contentType: false,
+				processData: false,
+				success: function(response) {
+					// $('#colorImage').html("<img src='$file[\'name\']'>");
+					$('#grayScaleImage').html(response);
+				}
+			});
+		}
+	</script>
+</head>
+<body>
+	<input type="file" name="image" id="fileName">
+	<input type="button" onclick="convertImage()" value="submit">
+	<div id='colorImage'></div>
+	<div id='grayScaleImage'></div>
+</body>
+</html>

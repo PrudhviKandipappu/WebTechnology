@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Show Server Time and Local Time</title>
+	<!-- <meta http-equiv="refresh" content="5"/> -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+	<script>
+		days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+		setInterval(function() {
+			// $.ajax({
+			// 	url: "http://138.68.140.83/Prudhvi/ShowTime.php",
+			// 	type: "GET",
+			// 	success: function(response) {
+			// 		$localTime = new Date();
+			// 		$dateTime = $localTime.getDate() + "-" + $localTime.getMonth() + "-" + $localTime.getFullYear() + "(" + days[$localTime.getDay()] + ")" + $localTime.getHours() + ":" + $localTime.getMinutes() + ":" + $localTime.getSeconds();
+			// 	}
+			// });
+			$localTime = new Date();
+			$dateTime = $localTime.getDate() + "-" + $localTime.getMonth() + "-" + $localTime.getFullYear() + "(" + days[$localTime.getDay()] + ")" + $localTime.getHours() + ":" + $localTime.getMinutes() + ":" + $localTime.getSeconds();
+			// $('#date').html(response + "<br>Current date and time on client: " + $dateTime)
+			$('#date').load("http://138.68.140.83/Prudhvi/ShowTime.php");
+			$('#localTime').html("Current date and time on client: " + $dateTime);
+		}, 1000);
+	</script>
+</head>
+<body>
+	<div id='date'></div>
+	<div id='localTime'></div>
+	<!-- <button onclick="showDateAndTime()">Show Date And Time</button> -->
+</body>
+</html>

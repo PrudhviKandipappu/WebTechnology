@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Test Internet</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+	<script>
+		$onlineCounter = 1;
+		$offlineCounter = 1;
+		setInterval(function() {
+			$toast = document.getElementById('toast');
+			if(navigator.onLine) {
+					$('#loading').html("");
+					$('#toast').html("You are in online!");
+					$toast.className = "show";
+					setTimeout(function() {
+						$toast.className = "hide";
+					}, 3000);
+					
+			}
+			else {
+					$('#toast').html("You are in offline!");
+					$toast.className = "show";
+					$('#loading').html("<center><img src='loadingIcon.gif'></center>");
+			}
+		}, 1000);
+	</script>
+
+	<style>
+		#toast{
+            visibility: hidden;
+            min-width: 250px;
+            background-color: skyblue;
+            text-align: center;
+            border-radius: 5px;
+            padding: 16px;
+            position: fixed;
+            left: 40%;
+            bottom: 30px;
+            font-size: 17px;
+            opacity: 0.8;
+        }
+
+        #toast.show {
+            visibility: visible;
+            -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+            animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        }
+	</style>
+</head>
+<body>
+	<h2><center>Welcome To Tecnics Lab!</center></h3>
+	<!-- <button onclick="detectInternet()">Check Internet</button> -->
+	<div id="loading"></div>
+	<div id="toast"></div>
+</body>
+</html>
